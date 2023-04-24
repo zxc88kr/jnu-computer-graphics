@@ -79,7 +79,7 @@ void torus() // torus
 	glColor3d(1.0, 0.7, 1.0); // light pink
 	glPushMatrix();
 	glTranslatef(0.0, 2.5, -1.0);
-	glRotatef(45.0, 1.0, 0.0, 0.0);
+	glRotatef(25.0, 1.0, 0.0, 0.0);
 	glutSolidTorus(0.3, 0.7, 3, 30);
 	glPopMatrix();
 }
