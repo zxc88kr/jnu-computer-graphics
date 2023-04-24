@@ -32,14 +32,14 @@ void cube() // one cube with six quads
 	// left side
 	glColor3d(0.0, 0.0, 1.0); // blue
 	glPushMatrix();
-	glRotatef(90, 0.0, 1.0, 0.0);
+	glRotatef(90.0, 0.0, 1.0, 0.0);
 	quad();
 	glPopMatrix();
 
 	// right side
 	glColor3d(1.0, 1.0, 0.0); // yellow
 	glPushMatrix();
-	glRotatef(90, 0.0, 1.0, 0.0);
+	glRotatef(90.0, 0.0, 1.0, 0.0);
 	glTranslatef(0.0, 0.0, 1.0);
 	quad();
 	glPopMatrix();
@@ -47,7 +47,7 @@ void cube() // one cube with six quads
 	// top side
 	glColor3d(1.0, 0.0, 1.0); // magenta
 	glPushMatrix();
-	glRotatef(90, -1.0, 0.0, 0.0);
+	glRotatef(90.0, -1.0, 0.0, 0.0);
 	glTranslatef(0.0, 0.0, 1.0);
 	quad();
 	glPopMatrix();
@@ -55,7 +55,7 @@ void cube() // one cube with six quads
 	// bottom side
 	glColor3d(0.0, 1.0, 1.0); // cyan
 	glPushMatrix();
-	glRotatef(90, -1.0, 0.0, 0.0);
+	glRotatef(90.0, -1.0, 0.0, 0.0);
 	quad();
 	glPopMatrix();
 }
@@ -64,9 +64,9 @@ void cone() // cone
 {
 	glColor3d(0.7, 1.0, 0.7); // light green
 	glPushMatrix();
-	glRotatef(90, -1.0, 0.0, 0.0);
-	glTranslatef(-2.5, 1.0, 0.0);
-	glutSolidCone(1, 1, 100, 100);
+	glTranslatef(-2.5, 0.0, 0.0);
+	glRotatef(90.0, -1.0, 0.0, 0.0);
+	glutSolidCone(1.0, 1.0, 100, 100);
 	glPopMatrix();
 }
 
@@ -74,9 +74,9 @@ void torus() // torus
 {
 	glColor3d(1.0, 0.7, 1.0); // light pink
 	glPushMatrix();
-	glRotatef(45, 1.0, 0.0, 0.0);
-	glTranslatef(0.0, 1.5, -2.0);
-	glutSolidTorus(0.3, 0.7, 2, 100);
+	glTranslatef(0.0, 2.5, -1.0);
+	glRotatef(25.0, 1.0, 0.0, 0.0);
+	glutSolidTorus(0.3, 0.7, 3, 30);
 	glPopMatrix();
 }
 
@@ -86,7 +86,7 @@ void sphere() // sphere
 	qobj = gluNewQuadric();
 	glColor3d(0.3, 0.3, 0.3); // light black
 	glPushMatrix();
-	glTranslatef(0.0, 0.0, 1.5);
+	glTranslatef(0.0, -1.5, 1.0);
 	gluSphere(qobj, 0.5, 100, 100);
 	glPopMatrix();
 }
