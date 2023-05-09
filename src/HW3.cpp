@@ -107,51 +107,45 @@ int main()
 
 	printf("----------------------------------------\n");
 
-	double t, _u, _v;
+	double t, u, v;
 	bool isHit;
-	Vector3d v, P;
+	Vector3d P;
 
-	// v = OV
-	v = V1 - O;
+	// t = ((P0 - O) · N) / (V · N)
+	t = dot(P0 - O, N) / dot(V1, N);
 
-	// t = ((P0 - O) · N) / (v · N)
-	t = dot(P0 - O, N) / dot(v, N);
-
-	// P = O + t * v
-	P = O + t * v;
+	// P = O + t * V
+	P = O + t * V1;
 	printf("P = ");
 	printVector3d(P);
 
 	// u = P0P · U, v = P0P · V
-	_u = dot(P - P0, U);
-	_v = dot(P - P0, V);
-	printf("u, v = (%lf, %lf)\n", _u, _v);
+	u = dot(P - P0, U);
+	v = dot(P - P0, V);
+	printf("u, v = (%lf, %lf)\n", u, v);
 
 	// u > 0 && v > 0 && u + v < 1
-	isHit = (_u > 0 && _v > 0 && _u + _v < 1) ? true : false;
+	isHit = (u > 0 && v > 0 && u + v < 1) ? true : false;
 	if (isHit) printf("ray hits triangle\n");
 	else	   printf("ray doesn't hit triangle\n");
 
 	printf("----------------------------------------\n");
 
-	// v = OV
-	v = V2 - O;
+	// t = ((P0 - O) · N) / (V · N)
+	t = dot(P0 - O, N) / dot(V2, N);
 
-	// t = ((P0 - O) · N) / (v · N)
-	t = dot(P0 - O, N) / dot(v, N);
-
-	// P = O + t * v
-	P = O + t * v;
+	// P = O + t * V
+	P = O + t * V2;
 	printf("P = ");
 	printVector3d(P);
 
 	// u = P0P · U, v = P0P · V
-	_u = dot(P - P0, U);
-	_v = dot(P - P0, V);
-	printf("u, v = (%lf, %lf)\n", _u, _v);
+	u = dot(P - P0, U);
+	v = dot(P - P0, V);
+	printf("u, v = (%lf, %lf)\n", u, v);
 
 	// u > 0 && v > 0 && u + v < 1
-	isHit = (_u > 0 && _v > 0 && _u + _v < 1) ? true : false;
+	isHit = (u > 0 && v > 0 && u + v < 1) ? true : false;
 	if (isHit) printf("ray hits triangle\n");
 	else	   printf("ray doesn't hit triangle\n");
 
