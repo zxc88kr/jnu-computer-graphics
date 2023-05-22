@@ -8,6 +8,7 @@
 #include <cstdio>
 #include <algorithm>
 #include <cmath>
+#include <vector>
 
 struct Interval
 {
@@ -156,6 +157,16 @@ Interval g(const Interval& I)
 double (*funcOriginal)(double);
 Interval (*funcInterval)(const Interval&);
 
+std::vector<double> roots;
+
+void initIntervalMethod(double (*originalPtr)(double), Interval (*intervalPtr)(const Interval&))
+{
+	funcOriginal = originalPtr;
+	funcInterval = intervalPtr;
+
+	roots.clear();
+}
+
 double intervalMethod(const Interval& I)
 {
 	if (I.end - I.begin < EPSILON)
@@ -177,15 +188,63 @@ double intervalMethod(const Interval& I)
 	return (temp != NULL) ? temp : intervalMethod(I2);
 }
 
+void intervalMethodAllRoots(const Interval& I)
+{
+	if (I.end - I.begin < EPSILON)
+	{
+		double root = (I.begin + I.end) / 2;
+		if (funcOriginal(root - EPSILON) * funcOriginal(root + EPSILON) < 0)
+		{
+			roots.push_back(root);
+			return;
+		}
+		else return;
+	}
+
+	Interval J = funcInterval(I);
+	
+	if (J.begin > 0 || J.end < 0) return;
+
+	Interval I1(I.begin, (I.begin + I.end) / 2);
+	Interval I2((I.begin + I.end) / 2, I.end);
+
+	intervalMethodAllRoots(I1);
+	intervalMethodAllRoots(I2);
+}
+
+
 int main()
 {
-	double firstRoot;
+	double root;
 	Interval I(0, 5);
 
-	funcOriginal = f;
-	funcInterval = f;
-	firstRoot = intervalMethod(I);
-	printf("%lf\n", firstRoot);
+	printf("--------------------------------------------------\n");
+
+	initIntervalMethod(f, f);
+
+	root = intervalMethod(I);
+	printf("1st root : %lf\n", root);
+
+	intervalMethodAllRoots(I);
+	printf("all root : ");
+	for (auto it : roots)
+		printf("%lf ", it);
+	printf("\n");
+
+	printf("--------------------------------------------------\n");
+
+	initIntervalMethod(g, g);
+
+	root = intervalMethod(I);
+	printf("1st root : %lf\n", root);
+
+	intervalMethodAllRoots(I);
+	printf("all root : ");
+	for (auto it : roots)
+		printf("%lf ", it);
+	printf("\n");
+
+	printf("--------------------------------------------------\n");
 
 	return 0;
 }
