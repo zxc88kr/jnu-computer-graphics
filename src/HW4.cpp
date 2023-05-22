@@ -7,8 +7,8 @@
 #define _USE_MATH_DEFINES
 
 #include <cstdio>
-#include <algorithm>
 #include <cmath>
+#include <algorithm>
 #include <set>
 
 struct Interval
@@ -42,9 +42,9 @@ struct Interval
 	friend Interval operator*(const Interval& I1, const Interval& I2)
 	{
 		double _begin = std::min(std::min(I1.begin * I2.begin, I1.begin * I2.end),
-								 std::min(I1.end   * I2.begin, I1.end   * I2.end));
+								 std::min(I1.end * I2.begin, I1.end * I2.end));
 		double _end = std::max(std::max(I1.begin * I2.begin, I1.begin * I2.end),
-							   std::max(I1.end   * I2.begin, I1.end   * I2.end));
+							   std::max(I1.end * I2.begin, I1.end * I2.end));
 		return Interval(_begin, _end);
 	}
 	friend Interval operator/(const Interval& I1, const Interval& I2)
@@ -52,9 +52,9 @@ struct Interval
 		if (I2.begin > 0 || I2.end < 0)
 		{
 			double _begin = std::min(std::min(I1.begin / I2.begin, I1.begin / I2.end),
-									 std::min(I1.end   / I2.begin, I1.end   / I2.end));
+									 std::min(I1.end / I2.begin, I1.end / I2.end));
 			double _end = std::max(std::max(I1.begin / I2.begin, I1.begin / I2.end),
-								   std::max(I1.end   / I2.begin, I1.end   / I2.end));
+								   std::max(I1.end / I2.begin, I1.end / I2.end));
 			return Interval(_begin, _end);
 		}
 	}
@@ -138,6 +138,7 @@ struct Interval
 	}
 };
 
+// functions : f(x), g(x)
 double f(double x)
 {
 	return (x + 1) * (x - 1) * (x - 4);
@@ -155,11 +156,14 @@ Interval g(const Interval& I)
 	return (I + 1) * ((I - 1) ^ 2) * (I - 4);
 }
 
+// forwarding function parameters
 double (*funcOriginal)(double);
 Interval (*funcInterval)(const Interval&);
 
+// set does not allow duplication
 std::set<double> roots;
 
+// initialize the settings
 void initIntervalMethod(double (*originalPtr)(double), Interval (*intervalPtr)(const Interval&))
 {
 	funcOriginal = originalPtr;
@@ -168,19 +172,23 @@ void initIntervalMethod(double (*originalPtr)(double), Interval (*intervalPtr)(c
 	roots.clear();
 }
 
+// find only one root
 double intervalMethod(const Interval& I)
 {
-	if (I.end - I.begin < EPSILON)
+	if (I.end - I.begin < EPSILON) // |I| < ε
 	{
+		// root is the center of I
 		double root = (I.begin + I.end) / 2;
+		// multiple root is not allowed
 		if (funcOriginal(root - EPSILON) * funcOriginal(root + EPSILON) < 0) return root;
 		else return NULL;
 	}
 
-	Interval J = funcInterval(I);
+	Interval J = funcInterval(I); // J <- f(I)
 
-	if (J.begin > 0 || J.end < 0) return NULL;
+	if (J.begin > 0 || J.end < 0) return NULL; // 0 ∉ J
 
+	// I -> I1, I2
 	Interval I1(I.begin, (I.begin + I.end) / 2);
 	Interval I2((I.begin + I.end) / 2, I.end);
 
@@ -189,13 +197,17 @@ double intervalMethod(const Interval& I)
 	return (temp != NULL) ? temp : intervalMethod(I2);
 }
 
+// find all the roots
 void intervalMethodAllRoots(const Interval& I)
 {
-	if (I.end - I.begin < EPSILON)
+	if (I.end - I.begin < EPSILON) // |I| < ε
 	{
+		// root is the center of I
 		double root = (I.begin + I.end) / 2;
+		// multiple root is not allowed
 		if (funcOriginal(root - EPSILON) * funcOriginal(root + EPSILON) < 0)
 		{
+			// eliminate duplication due to floating point errors
 			root = std::round(root * ROUNDING) / ROUNDING;
 			roots.insert(root);
 			return;
@@ -203,10 +215,11 @@ void intervalMethodAllRoots(const Interval& I)
 		else return;
 	}
 
-	Interval J = funcInterval(I);
+	Interval J = funcInterval(I); // J <- f(I)
 
-	if (J.begin > 0 || J.end < 0) return;
+	if (J.begin > 0 || J.end < 0) return; // 0 ∉ J
 
+	// I -> I1, I2
 	Interval I1(I.begin, (I.begin + I.end) / 2);
 	Interval I2((I.begin + I.end) / 2, I.end);
 
@@ -227,7 +240,8 @@ void printAllRoots(const std::set<double>& roots)
 	if (!roots.empty())
 	{
 		printf("all root : ");
-		for (auto it : roots) printf("%lf ", it);
+		for (auto it : roots)
+			printf("%lf ", it);
 		printf("\n");
 	}
 	else
