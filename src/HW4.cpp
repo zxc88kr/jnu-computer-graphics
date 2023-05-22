@@ -2,6 +2,7 @@
 // 학번 : 195443
 // 이름 : 박찬
 
+#define EPSILON 0.0000001
 #define _USE_MATH_DEFINES
 
 #include <cstdio>
@@ -132,7 +133,56 @@ struct Interval
 	}
 };
 
+double f(double x)
+{
+	return (x + 1) * (x - 1) * (x - 4);
+}
+Interval f(const Interval& I)
+{
+	return (I + 1) * (I - 1) * (I - 4);
+}
+double g(double x)
+{
+	return (x + 1) * (x - 1) * (x - 1) * (x - 4);
+}
+Interval g(const Interval& I)
+{
+	return (I + 1) * ((I - 1) ^ 2) * (I - 4);
+}
+
+double (*funcOriginal)(double);
+Interval (*funcInterval)(const Interval&);
+
+double intervalMethod(const Interval& I)
+{
+	if (I.end - I.begin < EPSILON)
+	{
+		double root = (I.begin + I.end) / 2;
+		if (funcOriginal(root - EPSILON) * funcOriginal(root + EPSILON) < 0) return root;
+		else return NULL;
+	}
+
+	Interval J = funcInterval(I);
+
+	if (J.begin * J.end > 0)
+		return NULL;
+
+	Interval I1(I.begin, (I.begin + I.end) / 2);
+	Interval I2((I.begin + I.end) / 2, I.end);
+
+	double temp = intervalMethod(I1);
+
+	return (temp != NULL) ? temp : intervalMethod(I2);
+}
+
 int main()
 {
+	Interval I(0, 5);
+
+	funcOriginal = f;
+	funcInterval = f;
+	double root = intervalMethod(I);
+	printf("%llf\n", root);
+
 	return 0;
 }
