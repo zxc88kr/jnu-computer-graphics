@@ -3,12 +3,13 @@
 // 이름 : 박찬
 
 #define EPSILON 0.0000001
+#define ROUNDING 1000000
 #define _USE_MATH_DEFINES
 
 #include <cstdio>
 #include <algorithm>
 #include <cmath>
-#include <vector>
+#include <set>
 
 struct Interval
 {
@@ -157,7 +158,7 @@ Interval g(const Interval& I)
 double (*funcOriginal)(double);
 Interval (*funcInterval)(const Interval&);
 
-std::vector<double> roots;
+std::set<double> roots;
 
 void initIntervalMethod(double (*originalPtr)(double), Interval (*intervalPtr)(const Interval&))
 {
@@ -177,7 +178,7 @@ double intervalMethod(const Interval& I)
 	}
 
 	Interval J = funcInterval(I);
-	
+
 	if (J.begin > 0 || J.end < 0) return NULL;
 
 	Interval I1(I.begin, (I.begin + I.end) / 2);
@@ -195,14 +196,15 @@ void intervalMethodAllRoots(const Interval& I)
 		double root = (I.begin + I.end) / 2;
 		if (funcOriginal(root - EPSILON) * funcOriginal(root + EPSILON) < 0)
 		{
-			roots.push_back(root);
+			root = std::round(root * ROUNDING) / ROUNDING;
+			roots.insert(root);
 			return;
 		}
 		else return;
 	}
 
 	Interval J = funcInterval(I);
-	
+
 	if (J.begin > 0 || J.end < 0) return;
 
 	Interval I1(I.begin, (I.begin + I.end) / 2);
