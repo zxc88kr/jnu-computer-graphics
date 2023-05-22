@@ -214,6 +214,25 @@ void intervalMethodAllRoots(const Interval& I)
 	intervalMethodAllRoots(I2);
 }
 
+void printFirstRoot(double root)
+{
+	if (root != NULL)
+		printf("1st root : %lf\n", root);
+	else
+		printf("no root\n");
+}
+
+void printAllRoots(const std::set<double>& roots)
+{
+	if (!roots.empty())
+	{
+		printf("all root : ");
+		for (auto it : roots) printf("%lf ", it);
+		printf("\n");
+	}
+	else
+		printf("no root\n");
+}
 
 int main()
 {
@@ -225,26 +244,20 @@ int main()
 	initIntervalMethod(f, f);
 
 	root = intervalMethod(I);
-	printf("1st root : %lf\n", root);
+	printFirstRoot(root);
 
 	intervalMethodAllRoots(I);
-	printf("all root : ");
-	for (auto it : roots)
-		printf("%lf ", it);
-	printf("\n");
+	printAllRoots(roots);
 
 	printf("--------------------------------------------------\n");
 
 	initIntervalMethod(g, g);
 
 	root = intervalMethod(I);
-	printf("1st root : %lf\n", root);
+	printFirstRoot(root);
 
 	intervalMethodAllRoots(I);
-	printf("all root : ");
-	for (auto it : roots)
-		printf("%lf ", it);
-	printf("\n");
+	printAllRoots(roots);
 
 	printf("--------------------------------------------------\n");
 
