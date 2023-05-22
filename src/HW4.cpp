@@ -47,7 +47,7 @@ struct Interval
 	}
 	friend Interval operator/(const Interval& I1, const Interval& I2)
 	{
-		if (I2.begin * I2.end > 0)
+		if (I2.begin > 0 || I2.end < 0)
 		{
 			double _begin = std::min(std::min(I1.begin / I2.begin, I1.begin / I2.end),
 									 std::min(I1.end   / I2.begin, I1.end   / I2.end));
@@ -59,12 +59,12 @@ struct Interval
 	friend Interval operator^(const Interval& I, int n)
 	{
 		double _begin, _end;
-		if (n % 2 == 0)
+		if (n % 2 == 0) // n is even
 		{
-			_begin = (I.begin * I.end < 0) ? (0) : (std::min(std::pow(I.begin, n), std::pow(I.end, n)));
+			_begin = (I.begin <= 0 && I.end >= 0) ? 0 : std::min(std::pow(I.begin, n), std::pow(I.end, n));
 			_end = std::max(std::pow(I.begin, n), std::pow(I.end, n));
 		}
-		else
+		else // n is odd
 		{
 			_begin = std::pow(I.begin, n);
 			_end = std::pow(I.end, n);
@@ -118,7 +118,7 @@ struct Interval
 	}
 	friend Interval operator/(double k, const Interval& I)
 	{
-		if (I.begin * I.end > 0)
+		if (I.begin > 0 || I.end < 0)
 		{
 			double _begin = std::min(k / I.begin, k / I.end);
 			double _end = std::max(k / I.begin, k / I.end);
@@ -127,9 +127,12 @@ struct Interval
 	}
 	friend Interval operator/(const Interval& I, double k)
 	{
-		double _begin = (k > 0) ? (I.begin / k) : (I.end / k);
-		double _end = (k > 0) ? (I.end / k) : (I.begin / k);
-		return Interval(_begin, _end);
+		if (k != 0)
+		{
+			double _begin = (k > 0) ? (I.begin / k) : (I.end / k);
+			double _end = (k > 0) ? (I.end / k) : (I.begin / k);
+			return Interval(_begin, _end);
+		}
 	}
 };
 
@@ -163,9 +166,8 @@ double intervalMethod(const Interval& I)
 	}
 
 	Interval J = funcInterval(I);
-
-	if (J.begin * J.end > 0)
-		return NULL;
+	
+	if (J.begin > 0 || J.end < 0) return NULL;
 
 	Interval I1(I.begin, (I.begin + I.end) / 2);
 	Interval I2((I.begin + I.end) / 2, I.end);
@@ -177,12 +179,13 @@ double intervalMethod(const Interval& I)
 
 int main()
 {
+	double firstRoot;
 	Interval I(0, 5);
 
 	funcOriginal = f;
 	funcInterval = f;
-	double root = intervalMethod(I);
-	printf("%llf\n", root);
+	firstRoot = intervalMethod(I);
+	printf("%lf\n", firstRoot);
 
 	return 0;
 }
