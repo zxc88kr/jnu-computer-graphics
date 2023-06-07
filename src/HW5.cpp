@@ -4,17 +4,36 @@
 
 #include <glut.h>
 
+void leftViewport()
+{
+	glViewport(0, 0, 500, 500);
+	glPushMatrix();
+	gluLookAt(0.0, 0.4, 0.5, 0.0, -0.5, -1.0, 0.0, 1.0, 0.0);
+	glutSolidTeapot(0.5);
+	glPopMatrix();
+}
+
+void rightViewport()
+{
+	glViewport(500, 0, 500, 500);
+	glPushMatrix();
+	gluLookAt(0.0, 0.4, 0.5, 0.0, -0.5, -1.0, 0.0, 1.0, 0.0);
+	glutSolidTeapot(0.5);
+	glPopMatrix();
+}
+
 void display()
 {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	glViewport(0, 0, 500, 500);
-	glutSolidTeapot(0.5);
+	leftViewport();
+	rightViewport();
 
 	glFlush(); // single buffer switching
 }
 
-void initLight() {
+void initLight()
+{
 	GLfloat mat_diffuse[] = { 0.5, 0.4, 0.3, 1.0 };
 	GLfloat mat_ambient[] = { 0.5, 0.4, 0.3, 1.0 };
 	GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
@@ -38,10 +57,10 @@ void initLight() {
 	glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
 	glLightfv(GL_LIGHT0, GL_SPECULAR, light_specular);
 	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
-	
 }
 
-void initVisibility() {
+void initVisibility()
+{
 	glEnable(GL_CULL_FACE);
 	glFrontFace(GL_CW);
 	glCullFace(GL_BACK);
@@ -57,7 +76,6 @@ void init()
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	gluLookAt(0.0, 0.4, 0.5, 0.0, -0.5, -1.0, 0.0, 1.0, 0.0);
 
 	initLight();
 	initVisibility();
