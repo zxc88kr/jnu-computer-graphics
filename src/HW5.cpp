@@ -7,8 +7,17 @@
 void teapot()
 {
 	glPushMatrix();
-	glTranslatef(0.0, 0.5, -0.5);
+	glTranslatef(0.0, 0.3, 0.0);
 	glutSolidTeapot(0.3);
+	glPopMatrix();
+}
+
+void cube()
+{
+	glPushMatrix();
+	glTranslatef(0.0, -0.3, 0.0);
+	glRotatef(30.0, 1.0, 0.0, 0.0);
+	glutSolidCube(0.3);
 	glPopMatrix();
 }
 
@@ -18,6 +27,7 @@ void leftViewport()
 	glPushMatrix();
 	gluLookAt(0.1, 0.1, 0.3, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 	teapot();
+	cube();
 	glPopMatrix();
 }
 
@@ -27,6 +37,7 @@ void rightViewport()
 	glPushMatrix();
 	gluLookAt(-0.1, 0.1, 0.3, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 	teapot();
+	cube();
 	glPopMatrix();
 }
 
