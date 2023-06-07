@@ -61,7 +61,7 @@ void initLight()
 	GLfloat light_diffuse[] = { 0.8, 0.8, 0.8, 1.0 };
 	GLfloat light_ambient[] = { 0.3, 0.3, 0.3, 1.0 };
 	GLfloat light_specular[] = { 1.0, 1.0, 1.0, 1.0 };
-	GLfloat light_position[] = { -3, 2, 3.0, 0.0 };
+	GLfloat light_position[] = { -3.0, 2.0, 3.0, 0.0 };
 
 	glShadeModel(GL_SMOOTH);
 	glEnable(GL_LIGHTING);
