@@ -4,7 +4,7 @@
 
 #include <glut.h>
 
-void teapot()
+void teapot() // teapot
 {
 	glPushMatrix();
 	glTranslatef(0.0, 0.3, 0.0);
@@ -12,7 +12,7 @@ void teapot()
 	glPopMatrix();
 }
 
-void cube()
+void cube() // cube
 {
 	glPushMatrix();
 	glTranslatef(0.0, -0.3, 0.0);
@@ -21,7 +21,7 @@ void cube()
 	glPopMatrix();
 }
 
-void leftViewport()
+void leftViewport() // image viewed from the right eye
 {
 	glViewport(0, 0, 500, 500);
 	glPushMatrix();
@@ -31,7 +31,7 @@ void leftViewport()
 	glPopMatrix();
 }
 
-void rightViewport()
+void rightViewport() // image viewed from the left eye
 {
 	glViewport(500, 0, 500, 500);
 	glPushMatrix();
@@ -51,12 +51,12 @@ void display()
 	glFlush(); // single buffer switching
 }
 
-void initLight()
+void initProperty() // material and light properties
 {
-	GLfloat mat_diffuse[] = { 0.5, 0.4, 0.3, 1.0 };
-	GLfloat mat_ambient[] = { 0.5, 0.4, 0.3, 1.0 };
-	GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
-	GLfloat mat_shininess[] = { 50.0 };
+	GLfloat material_diffuse[] = { 0.5, 0.4, 0.3, 1.0 };
+	GLfloat material_ambient[] = { 0.5, 0.4, 0.3, 1.0 };
+	GLfloat material_specular[] = { 1.0, 1.0, 1.0, 1.0 };
+	GLfloat material_shininess[] = { 50.0 };
 	
 	GLfloat light_diffuse[] = { 0.8, 0.8, 0.8, 1.0 };
 	GLfloat light_ambient[] = { 0.3, 0.3, 0.3, 1.0 };
@@ -67,10 +67,10 @@ void initLight()
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
 
-	glMaterialfv(GL_FRONT, GL_DIFFUSE, mat_diffuse);
-	glMaterialfv(GL_FRONT, GL_AMBIENT, mat_ambient);
-	glMaterialfv(GL_FRONT, GL_SPECULAR, mat_specular);
-	glMaterialfv(GL_FRONT, GL_SHININESS, mat_shininess);
+	glMaterialfv(GL_FRONT, GL_DIFFUSE, material_diffuse);
+	glMaterialfv(GL_FRONT, GL_AMBIENT, material_ambient);
+	glMaterialfv(GL_FRONT, GL_SPECULAR, material_specular);
+	glMaterialfv(GL_FRONT, GL_SHININESS, material_shininess);
 
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, light_diffuse);
 	glLightfv(GL_LIGHT0, GL_AMBIENT, light_ambient);
@@ -78,7 +78,7 @@ void initLight()
 	glLightfv(GL_LIGHT0, GL_POSITION, light_position);
 }
 
-void initVisibility()
+void initVisibility() // polygon rendering
 {
 	glEnable(GL_CULL_FACE);
 	glFrontFace(GL_CW);
@@ -96,7 +96,7 @@ void init()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	initLight();
+	initProperty();
 	initVisibility();
 
 	glEnable(GL_DEPTH_TEST);
