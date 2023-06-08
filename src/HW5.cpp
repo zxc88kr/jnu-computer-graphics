@@ -16,7 +16,7 @@ void cube() // cube
 {
 	glPushMatrix();
 	glTranslatef(0.0, -0.3, 0.0);
-	glRotatef(30.0, 1.0, 0.0, 0.0);
+	glRotatef(30.0, 0.0, 1.0, 0.0);
 	glutSolidCube(0.3);
 	glPopMatrix();
 }
